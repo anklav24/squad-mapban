@@ -109,6 +109,13 @@ document.addEventListener('DOMContentLoaded', () => {
       updatePhaseInfo();
       // Re-render maps to update the banned text
       renderMaps();
+    } else {
+      // Update teamTurn and phaseDescription when the game is not in progress
+      teamTurnDisplay.textContent = getTranslation('selectionComplete');
+      phaseDescription.textContent = getTranslation('selectedMapsDescription', { count: state.finalMapCount });
+      // Hide phase title
+      document.getElementById('phaseTitle').classList.add('hidden');
+      document.getElementById('phaseTitle-en').classList.add('hidden');
     }
   }
 
@@ -216,18 +223,18 @@ document.addEventListener('DOMContentLoaded', () => {
   function updatePhaseInfo() {
     // Update team turn display with translation
     teamTurnDisplay.textContent = getTranslation('teamTurn', { team: state.currentTurn });
-    
+
     const remainingMaps = state.selectedMaps.length;
     const mapsToRemove = remainingMaps - state.finalMapCount;
-    
+
     if (mapsToRemove <= 0) {
       finishMapSelection();
       return;
     }
-    
+
     // Update phase description with translation
     phaseDescription.textContent = getTranslation('phaseDescription', { count: state.finalMapCount });
-    
+
     // Update map counter with translation
     mapCounter.textContent = getTranslation('mapCounter', { 
       remaining: remainingMaps, 
@@ -332,6 +339,10 @@ document.addEventListener('DOMContentLoaded', () => {
     mapsContainer.classList.add('hidden');
     finalMapsSection.classList.remove('hidden');
     finalMapsContainer.innerHTML = '';
+
+    // Hide phase title
+    document.getElementById('phaseTitle').classList.add('hidden');
+    document.getElementById('phaseTitle-en').classList.add('hidden');
 
     // Render final maps
     state.selectedMaps.forEach(map => {
