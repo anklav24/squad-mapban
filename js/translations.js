@@ -3,7 +3,7 @@
 const translations = {
     ru: {
         teamTurn: "{team} выбирает карту для бана",
-        phaseDescription: "Каждая команда по очереди банит карты, пока не останется {count} карт.",
+        phaseDescription: "Каждая команда по очереди банит карты, пока не останется {count}",
         mapCounter: "Осталось {remaining} карт, нужно забанить еще {toRemove}",
         selectionComplete: "Выбор карт завершен!",
         selectedMapsDescription: "Следующие {count} карт были выбраны для турнира:",
@@ -11,7 +11,7 @@ const translations = {
     },
     en: {
         teamTurn: "{team}'s Turn to Ban",
-        phaseDescription: "Each team takes turns banning maps until {count} remain.",
+        phaseDescription: "Each team takes turns banning maps until {count} remain",
         mapCounter: "{remaining} maps remaining, {toRemove} more to ban",
         selectionComplete: "Map Selection Complete!",
         selectedMapsDescription: "The following {count} maps have been selected for the tournament:",

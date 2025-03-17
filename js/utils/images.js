@@ -44,7 +44,7 @@ function setupMapImages(maps, currentLang) {
     const mapBaseName = map.name.replace(/[^a-zA-Z0-9]/g, '');
     
     // Set the image path based on the map name
-    map.image = `img/maps/${mapBaseName}.jpg`;
+    map.image = `assets/images/maps/${mapBaseName}.jpg`;
     
     // Pre-load the image to check if it exists
     const img = new Image();
