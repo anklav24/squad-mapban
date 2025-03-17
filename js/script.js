@@ -4,11 +4,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const setupContainer = document.getElementById('setupContainer');
   const selectionPhase = document.getElementById('selectionPhase');
   const startSelectionBtn = document.getElementById('startSelection');
-  const startSelectionBtnEn = document.getElementById('startSelection-en');
   const team1Input = document.getElementById('team1');
-  const team1InputEn = document.getElementById('team1-en');
   const team2Input = document.getElementById('team2');
-  const team2InputEn = document.getElementById('team2-en');
   const finalMapCountInput = document.getElementById('finalMapCount');
   const firstBanSelect = document.getElementById('firstBan');
   const mapTypeCheckboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
@@ -19,15 +16,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const finalMapsSection = document.getElementById('finalMapsSection');
   const finalMapsContainer = document.getElementById('finalMapsContainer');
   const newSelectionBtn = document.getElementById('newSelection');
-  const newSelectionBtnEn = document.getElementById('newSelection-en');
   const confirmationModal = document.getElementById('confirmationModal');
   const confirmationMessage = document.getElementById('confirmationMessage');
   const confirmBanBtn = document.getElementById('confirmBan');
-  const confirmBanBtnEn = document.getElementById('confirmBan-en');
   const cancelBanBtn = document.getElementById('cancelBan');
-  const cancelBanBtnEn = document.getElementById('cancelBan-en');
   const languageBtns = document.querySelectorAll('.lang-btn');
   const randomMapLimitInput = document.getElementById('randomMapLimit');
+  const mapFilterModal = document.getElementById('mapFilterModal');
+  const mapFilterContainer = document.getElementById('mapFilterContainer');
+  const confirmMapFilterBtn = document.getElementById('confirmMapFilter');
+  const cancelMapFilterBtn = document.getElementById('cancelMapFilter');
+  const selectAllMapsBtn = document.getElementById('selectAllMaps');
+  const deselectAllMapsBtn = document.getElementById('deselectAllMaps');
+  const openMapFilterModalBtn = document.getElementById('openMapFilterModal');
 
   // App State
   let state = {
@@ -51,13 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Event Listeners
   startSelectionBtn.addEventListener('click', startMapSelection);
-  startSelectionBtnEn.addEventListener('click', startMapSelection);
   newSelectionBtn.addEventListener('click', resetAndStartNewSelection);
-  newSelectionBtnEn.addEventListener('click', resetAndStartNewSelection);
   confirmBanBtn.addEventListener('click', confirmMapBan);
-  confirmBanBtnEn.addEventListener('click', confirmMapBan);
   cancelBanBtn.addEventListener('click', cancelMapBan);
-  cancelBanBtnEn.addEventListener('click', cancelMapBan);
+  confirmMapFilterBtn.addEventListener('click', confirmMapFilter);
+  cancelMapFilterBtn.addEventListener('click', () => {
+    mapFilterModal.classList.remove('active');
+  });
+  selectAllMapsBtn.addEventListener('click', () => {
+    mapFilterContainer.querySelectorAll('.map-card').forEach(card => card.classList.add('selected'));
+  });
+  deselectAllMapsBtn.addEventListener('click', () => {
+    mapFilterContainer.querySelectorAll('.map-card').forEach(card => card.classList.remove('selected'));
+  });
+  openMapFilterModalBtn.addEventListener('click', openMapFilterModal);
   
   // Language switcher
   languageBtns.forEach(btn => {
@@ -86,21 +94,14 @@ document.addEventListener('DOMContentLoaded', () => {
     state.currentLang = lang;
     document.documentElement.lang = lang;
     
-    // Hide all language elements
-    document.querySelectorAll('.lang-ru, .lang-en').forEach(el => {
-      el.classList.add('hidden');
-    });
-    
-    // Show current language elements
-    document.querySelectorAll(`.lang-${lang}`).forEach(el => {
-      el.classList.remove('hidden');
-    });
-    
     // Update active button
     languageBtns.forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
     });
-    
+
+    // Apply translations
+    applyTranslations();
+
     // Update select options for the team to ban first
     updateSelectOptions(lang);
     
@@ -123,25 +124,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Update text for each option based on language
     if (options.length >= 2) {
-      if (lang === 'ru') {
-        options[0].textContent = 'Команда 1';
-        options[1].textContent = 'Команда 2';
-      } else {
-        options[0].textContent = 'Team 1';
-        options[1].textContent = 'Team 2';
-      }
+      options[0].textContent = getTranslation('team1DefaultName');
+      options[1].textContent = getTranslation('team2DefaultName');
     }
   }
 
   function startMapSelection() {
     // Get inputs based on current language
-    if (state.currentLang === 'ru') {
-      state.team1Name = team1Input.value.trim() || 'Команда 1';
-      state.team2Name = team2Input.value.trim() || 'Команда 2';
-    } else {
-      state.team1Name = team1InputEn.value.trim() || 'Team 1';
-      state.team2Name = team2InputEn.value.trim() || 'Team 2';
-    }
+    state.team1Name = getTeamName('team1');
+    state.team2Name = getTeamName('team2');
     
     state.finalMapCount = parseInt(finalMapCountInput.value) || 3;
     state.randomMapLimit = parseInt(randomMapLimitInput.value) || 6;
@@ -187,6 +178,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMaps();
   }
 
+  function getTeamName(team) {
+    const input = document.getElementById(`${team}-${state.currentLang}`);
+    return input.value.trim() || getTranslation(`${team}DefaultName`);
+  }
+
   function resetAndStartNewSelection() {
     // Reset state but keep language preference
     const currentLang = state.currentLang;
@@ -204,10 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     // Reset UI
-    team1Input.value = '';
-    team1InputEn.value = '';
-    team2Input.value = '';
-    team2InputEn.value = '';
+    document.querySelectorAll('.team-input').forEach(input => input.value = '');
     finalMapCountInput.value = '3';
     firstBanSelect.value = 'team1';
     mapTypeCheckboxes.forEach(checkbox => checkbox.checked = true);
@@ -372,7 +365,92 @@ document.addEventListener('DOMContentLoaded', () => {
     state.gameInProgress = false;
   }
 
+  function openMapFilterModal() {
+    console.log("Opening map filter modal...");
+    // Render maps in the modal
+    mapFilterContainer.innerHTML = '';
+    const availableMaps = [
+      'Harju', 'Anvil', 'AlBasrah', 'Belaya', 'Chora', 'Fallujah', 'FoolsRoad', 'GooseBay', 'Gorodok', 'Kamdesh',
+      'Kohat', 'Kokan', 'Lashkar', 'Logar', 'Manicouagan', 'Mestia', 'Mutaha', 'Narva', 'PacificProvingGrounds',
+      'Skorpo', 'Sumari', 'Tallil', 'Yehorivka', 'BlackCoast', 'Sanxian_Islands'
+    ];
+
+    availableMaps.forEach(mapName => {
+      const mapCard = document.createElement('div');
+      mapCard.className = 'map-card';
+      mapCard.dataset.mapName = mapName;
+
+      // Create map image
+      const img = document.createElement('img');
+      img.src = `assets/images/maps/${mapName}.jpg`;
+      img.alt = mapName;
+      mapCard.appendChild(img);
+
+      // Create map info
+      const mapInfo = document.createElement('div');
+      mapInfo.className = 'map-info';
+
+      const mapNameDiv = document.createElement('div');
+      mapNameDiv.className = 'map-name';
+      mapNameDiv.textContent = mapName;
+      mapInfo.appendChild(mapNameDiv);
+
+      mapCard.appendChild(mapInfo);
+
+      // Add click event to select/deselect map
+      mapCard.addEventListener('click', () => {
+        mapCard.classList.toggle('selected');
+        console.log(`Toggled selection for map: ${mapName}`);
+      });
+
+      mapFilterContainer.appendChild(mapCard);
+    });
+
+    mapFilterModal.classList.add('active');
+  }
+
+  function confirmMapFilter() {
+    console.log("Confirming map filter...");
+    // Get selected maps
+    const selectedMapCards = mapFilterContainer.querySelectorAll('.map-card.selected');
+    const selectedMaps = Array.from(selectedMapCards).map(card => card.dataset.mapName);
+
+    console.log("Selected maps:", selectedMaps);
+
+    // Update state with selected maps
+    state.selectedMaps = selectedMaps;
+    state.mapsPool = selectedMaps;
+
+    // Close modal
+    mapFilterModal.classList.remove('active');
+
+    // Update UI
+    renderMaps();
+  }
+
+  function applyTranslations() {
+    const elements = document.querySelectorAll('[data-translate]');
+    elements.forEach(el => {
+        const key = el.getAttribute('data-translate');
+        el.textContent = getTranslation(key);
+    });
+
+    const placeholders = document.querySelectorAll('[data-placeholder]');
+    placeholders.forEach(el => {
+        const key = el.getAttribute('data-placeholder');
+        el.placeholder = getTranslation(key);
+    });
+  }
+
+  // Close modal when clicking outside of it
+  window.addEventListener('click', (event) => {
+    if (event.target === mapFilterModal) {
+      mapFilterModal.classList.remove('active');
+    }
+  });
+
   // Initialize
   initLanguage();
+  applyTranslations();
   setupMapImages(squadMaps, state.currentLang);
 });

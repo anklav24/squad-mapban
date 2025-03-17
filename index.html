@@ -1,88 +1,53 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>[RU][NKLV] Сибирский Анклав - Squad Map Ban</title>
+    <title data-translate="title">[RU][NKLV] Сибирский Анклав - Squad Map Ban</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="icon" href="assets/favicons/favicon.png" type="image/png">
 </head>
+
 <body>
     <div class="container">
         <header>
             <div class="brand">
-                <h1 class="lang-ru">[RU][NKLV] СИБИРСКИЙ АНКЛАВ - БАН КАРТ SQUAD</h1>
-                <h1 class="lang-en hidden">[RU][NKLV] SIBERIAN ANKLAV - SQUAD MAP BAN</h1>
+                <h1 data-translate="brandTitle">[RU][NKLV] СИБИРСКИЙ АНКЛАВ - БАН КАРТ SQUAD</h1>
             </div>
             <div class="setup-container" id="setupContainer">
                 <div class="setup-box">
-                    <h2 class="lang-ru">Настройки игры</h2>
-                    <h2 class="lang-en hidden">Game Setup</h2>
+                    <h2 data-translate="gameSetup">Настройки игры</h2>
                     <div class="form-group">
-                        <label for="team1" class="lang-ru">Название команды 1:</label>
-                        <label for="team1" class="lang-en hidden">Team 1 Name:</label>
-                        <input type="text" id="team1" class="lang-ru" placeholder="Введите название команды 1">
-                        <input type="text" id="team1-en" class="lang-en hidden" placeholder="Enter Team 1 name">
+                        <label for="team1" data-translate="team1Label">Название команды 1:</label>
+                        <input type="text" id="team1" placeholder="Введите название команды 1" data-placeholder="team1Placeholder">
                     </div>
                     <div class="form-group">
-                        <label for="team2" class="lang-ru">Название команды 2:</label>
-                        <label for="team2" class="lang-en hidden">Team 2 Name:</label>
-                        <input type="text" id="team2" class="lang-ru" placeholder="Введите название команды 2">
-                        <input type="text" id="team2-en" class="lang-en hidden" placeholder="Enter Team 2 name">
+                        <label for="team2" data-translate="team2Label">Название команды 2:</label>
+                        <input type="text" id="team2" placeholder="Введите название команды 2" data-placeholder="team2Placeholder">
                     </div>
                     <div class="form-group">
-                        <label for="finalMapCount" class="lang-ru">Количество финальных карт:</label>
-                        <label for="finalMapCount" class="lang-en hidden">Number of final maps:</label>
+                        <label for="finalMapCount" data-translate="finalMapCountLabel">Количество финальных карт:</label>
                         <input type="number" id="finalMapCount" min="1" max="10" value="3">
                     </div>
                     <div class="form-group">
-                        <label for="firstBan" class="lang-ru">Команда, которая банит первой:</label>
-                        <label for="firstBan" class="lang-en hidden">Team to ban first:</label>
+                        <label for="firstBan" data-translate="firstBanLabel">Команда, которая банит первой:</label>
                         <select id="firstBan">
-                            <option value="team1">Команда 1</option>
-                            <option value="team2">Команда 2</option>
+                            <option value="team1" data-translate="team1Option">Команда 1</option>
+                            <option value="team2" data-translate="team2Option">Команда 2</option>
                         </select>
                     </div>
                     <div class="form-group random-map-limit">
-                        <label for="randomMapLimit" class="lang-ru">Максимальное количество лееров:</label>
-                        <label for="randomMapLimit" class="lang-en hidden">Maximum number of layers:</label>
+                        <label for="randomMapLimit" data-translate="randomMapLimitLabel">Максимальное количество лееров:</label>
                         <input type="number" id="randomMapLimit" min="1" value="10">
                     </div>
-                    <div class="map-filter-container">
-                        <h3 class="lang-ru">Фильтр карт:</h3>
-                        <h3 class="lang-en hidden">Filter Maps:</h3>
-                        <div class="map-filter">
-                            <label><input type="checkbox" value="Harju" checked> Harju</label>
-                            <label><input type="checkbox" value="Anvil" checked> Anvil</label>
-                            <label><input type="checkbox" value="AlBasrah" checked> AlBasrah</label>
-                            <label><input type="checkbox" value="Belaya" checked> Belaya</label>
-                            <label><input type="checkbox" value="Chora" checked> Chora</label>
-                            <label><input type="checkbox" value="Fallujah" checked> Fallujah</label>
-                            <label><input type="checkbox" value="FoolsRoad" checked> Fool's Road</label>
-                            <label><input type="checkbox" value="GooseBay" checked> Goose Bay</label>
-                            <label><input type="checkbox" value="Gorodok" checked> Gorodok</label>
-                            <label><input type="checkbox" value="Kamdesh" checked> Kamdesh</label>
-                            <label><input type="checkbox" value="Kohat" checked> Kohat</label>
-                            <label><input type="checkbox" value="Kokan" checked> Kokan</label>
-                            <label><input type="checkbox" value="Lashkar" checked> Lashkar</label>
-                            <label><input type="checkbox" value="Logar" checked> Logar</label>
-                            <label><input type="checkbox" value="Manicouagan" checked> Manicouagan</label>
-                            <label><input type="checkbox" value="Mestia" checked> Mestia</label>
-                            <label><input type="checkbox" value="Mutaha" checked> Mutaha</label>
-                            <label><input type="checkbox" value="Narva" checked> Narva</label>
-                            <label><input type="checkbox" value="PacificProvingGrounds" checked> Pacific Proving Grounds</label>
-                            <label><input type="checkbox" value="Skorpo" checked> Skorpo</label>
-                            <label><input type="checkbox" value="Sumari" checked> Sumari</label>
-                            <label><input type="checkbox" value="Tallil" checked> Tallil</label>
-                            <label><input type="checkbox" value="Yehorivka" checked> Yehorivka</label>
-                            <label><input type="checkbox" value="BlackCoast" checked> Black Coast</label>
-                            <label><input type="checkbox" value="Sanxian_Islands" checked> Sanxian Islands</label>
-                        </div>
+                    <div class="form-group">
+                        <label for="mapFilter" data-translate="mapFilterLabel">Фильтр карт:</label>
+                        <button id="openMapFilterModal" class="btn" data-translate="openMapFilterBtn">Открыть фильтр карт</button>
                     </div>
                     <div class="mode-filter">
-                        <h3 class="lang-ru">Фильтр режимов:</h3>
-                        <h3 class="lang-en hidden">Filter Modes:</h3>
+                        <h3 data-translate="filterModes">Фильтр режимов:</h3>
                         <div class="checkbox-group">
                             <label><input type="checkbox" value="AAS" checked> AAS</label>
                             <label><input type="checkbox" value="RAAS" checked> RAAS</label>
@@ -94,16 +59,14 @@
                             <label><input type="checkbox" value="Seed" checked> Seed</label>
                         </div>
                     </div>
-                    <button id="startSelection" class="btn lang-ru">Начать выбор карт</button>
-                    <button id="startSelection-en" class="btn lang-en hidden">Start Map Selection</button>
+                    <button id="startSelection" class="btn" data-translate="startSelectionBtn">Начать выбор карт</button>
                 </div>
             </div>
         </header>
 
         <main id="selectionPhase" class="hidden">
             <div class="phase-info">
-                <h2 id="phaseTitle" class="lang-ru">Фаза выбора карт</h2>
-                <h2 id="phaseTitle-en" class="lang-en hidden">Map Selection Phase</h2>
+                <h2 id="phaseTitle" data-translate="phaseTitle">Фаза выбора карт</h2>
                 <div id="teamTurn" class="team-turn"></div>
                 <div id="phaseDescription" class="phase-description"></div>
                 <div id="mapCounter" class="map-counter"></div>
@@ -114,22 +77,19 @@
             </div>
 
             <div class="final-maps hidden" id="finalMapsSection">
-                <h2 class="lang-ru">Выбранные карты</h2>
-                <h2 class="lang-en hidden">Selected Maps</h2>
+                <h2 data-translate="selectedMapsTitle">Выбранные карты</h2>
                 <div id="finalMapsContainer" class="final-maps-container">
                     <!-- Final map selection will be displayed here -->
                 </div>
-                <button id="newSelection" class="btn lang-ru">Начать новый выбор</button>
-                <button id="newSelection-en" class="btn lang-en hidden">Start New Selection</button>
+                <button id="newSelection" class="btn" data-translate="newSelectionBtn">Начать новый выбор</button>
             </div>
         </main>
     </div>
 
     <footer>
         <div class="footer-content">
-            <p class="lang-ru">[RU][NKLV] Сибирский Анклав | Система выбора карт для турниров Squad</p>
-            <p class="lang-en hidden">[RU][NKLV] Siberian Anklav | Squad Tournament Map Selector</p>
-            
+            <p data-translate="footerText">[RU][NKLV] Сибирский Анклав | Система выбора карт для турниров Squad</p>
+
             <div class="language-selector">
                 <button data-lang="ru" class="lang-btn active">RU</button>
                 <button data-lang="en" class="lang-btn">EN</button>
@@ -139,14 +99,26 @@
 
     <div id="confirmationModal" class="modal">
         <div class="modal-content">
-            <h3 class="lang-ru">Подтвердить бан</h3>
-            <h3 class="lang-en hidden">Confirm Ban</h3>
+            <h3 data-translate="confirmBanTitle">Подтвердить бан</h3>
             <p id="confirmationMessage"></p>
             <div class="button-group">
-                <button id="confirmBan" class="btn btn-danger lang-ru">Подтвердить</button>
-                <button id="confirmBan-en" class="btn btn-danger lang-en hidden">Confirm</button>
-                <button id="cancelBan" class="btn lang-ru">Отмена</button>
-                <button id="cancelBan-en" class="btn lang-en hidden">Cancel</button>
+                <button id="confirmBan" class="btn btn-danger" data-translate="confirmBanBtn">Подтвердить</button>
+                <button id="cancelBan" class="btn" data-translate="cancelBanBtn">Отмена</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="mapFilterModal" class="modal">
+        <div class="modal-content">
+            <div class="button-group fixed">
+                <h2 data-translate="mapFilterTitle">Фильтр карт</h2>
+                <button id="selectAllMaps" class="btn" data-translate="selectAllMapsBtn">Выбрать все</button>
+                <button id="deselectAllMaps" class="btn" data-translate="deselectAllMapsBtn">Убрать выбор со всех</button>
+                <button id="confirmMapFilter" class="btn" data-translate="confirmMapFilterBtn">Подтвердить</button>
+                <button id="cancelMapFilter" class="btn btn-danger" data-translate="cancelMapFilterBtn">Отмена</button>
+            </div>
+            <div class="maps-container" id="mapFilterContainer">
+                <!-- Map cards will be generated here -->
             </div>
         </div>
     </div>
@@ -156,8 +128,9 @@
     <script src="js/constants/translations.js"></script>
     <script src="js/utils/translations.js"></script>
     <script src="js/utils/images.js"></script>
-    
+
     <!-- Основной скрипт -->
     <script src="js/script.js"></script>
 </body>
+
 </html>
