@@ -113,9 +113,6 @@ document.addEventListener('DOMContentLoaded', () => {
       // Update teamTurn and phaseDescription when the game is not in progress
       teamTurnDisplay.textContent = getTranslation('selectionComplete');
       phaseDescription.textContent = getTranslation('selectedMapsDescription', { count: state.finalMapCount });
-      // Hide phase title
-      document.getElementById('phaseTitle').classList.add('hidden');
-      document.getElementById('phaseTitle-en').classList.add('hidden');
     }
   }
 
@@ -183,6 +180,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update UI
     setupContainer.classList.add('hidden');
     selectionPhase.classList.remove('hidden');
+    mapsContainer.classList.remove('hidden');
     finalMapsSection.classList.add('hidden');
     
     updatePhaseInfo();
@@ -340,9 +338,6 @@ document.addEventListener('DOMContentLoaded', () => {
     finalMapsSection.classList.remove('hidden');
     finalMapsContainer.innerHTML = '';
 
-    // Hide phase title
-    document.getElementById('phaseTitle').classList.add('hidden');
-    document.getElementById('phaseTitle-en').classList.add('hidden');
 
     // Render final maps
     state.selectedMaps.forEach(map => {
