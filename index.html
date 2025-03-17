@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Squad Map Selector</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>SQUAD TOURNAMENT MAP SELECTOR</h1>
+            <div class="setup-container" id="setupContainer">
+                <div class="setup-box">
+                    <h2>Game Setup</h2>
+                    <div class="form-group">
+                        <label for="team1">Team 1 Name:</label>
+                        <input type="text" id="team1" placeholder="Enter Team 1 name">
+                    </div>
+                    <div class="form-group">
+                        <label for="team2">Team 2 Name:</label>
+                        <input type="text" id="team2" placeholder="Enter Team 2 name">
+                    </div>
+                    <div class="form-group">
+                        <label for="finalMapCount">Number of final maps:</label>
+                        <input type="number" id="finalMapCount" min="1" max="10" value="3">
+                    </div>
+                    <div class="form-group">
+                        <label for="firstBan">Team to ban first:</label>
+                        <select id="firstBan">
+                            <option value="team1">Team 1</option>
+                            <option value="team2">Team 2</option>
+                        </select>
+                    </div>
+                    <div class="map-filter">
+                        <h3>Filter Maps</h3>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" value="AAS" checked> AAS</label>
+                            <label><input type="checkbox" value="RAAS" checked> RAAS</label>
+                            <label><input type="checkbox" value="Invasion" checked> Invasion</label>
+                            <label><input type="checkbox" value="Insurgency" checked> Insurgency</label>
+                            <label><input type="checkbox" value="TC" checked> TC</label>
+                            <label><input type="checkbox" value="Skirmish" checked> Skirmish</label>
+                            <label><input type="checkbox" value="Destruction" checked> Destruction</label>
+                            <label><input type="checkbox" value="Seed" checked> Seed</label>
+                        </div>
+                    </div>
+                    <button id="startSelection" class="btn">Start Map Selection</button>
+                </div>
+            </div>
+        </header>
+
+        <main id="selectionPhase" class="hidden">
+            <div class="phase-info">
+                <h2 id="phaseTitle">Map Selection Phase</h2>
+                <div id="teamTurn" class="team-turn"></div>
+                <div id="phaseDescription" class="phase-description"></div>
+                <div id="mapCounter" class="map-counter"></div>
+            </div>
+
+            <div class="maps-container" id="mapsContainer">
+                <!-- Map cards will be generated here -->
+            </div>
+
+            <div class="final-maps hidden" id="finalMapsSection">
+                <h2>Selected Maps</h2>
+                <div id="finalMapsContainer" class="final-maps-container">
+                    <!-- Final map selection will be displayed here -->
+                </div>
+                <button id="newSelection" class="btn">Start New Selection</button>
+            </div>
+        </main>
+    </div>
+
+    <footer>
+        <p>Squad Tournament Map Selector | Created for Squad Tournaments</p>
+    </footer>
+
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <h3>Confirm Ban</h3>
+            <p id="confirmationMessage"></p>
+            <div class="button-group">
+                <button id="confirmBan" class="btn btn-danger">Confirm Ban</button>
+                <button id="cancelBan" class="btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/maps.js"></script>
+    <script src="js/script.js"></script>
+</body>
+</html>
