@@ -37,18 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
     finalMapCount: 3,
     currentTurn: '',
     mapsPool: [],
-    selectedMaps: [],
+    selectedLayers: [],
     bannedMaps: [],
     mapToBeRemoved: null,
     gameInProgress: false,
     currentLang: 'ru', // Default language
     randomMapLimit: 6, // Default random map limit
-    availableMaps: [
-      'Harju', 'Anvil', 'AlBasrah', 'Belaya', 'Chora', 'Fallujah', 'FoolsRoad', 'GooseBay', 'Gorodok', 'Kamdesh',
-      'Kohat', 'Kokan', 'Lashkar', 'Logar', 'Manicouagan', 'Mestia', 'Mutaha', 'Narva', 'PacificProvingGrounds',
-      'Skorpo', 'Sumari', 'Tallil', 'Yehorivka', 'BlackCoast', 'Sanxian_Islands'
-    ]
+
   };
+
 
   // Event Listeners
   startSelectionBtn.addEventListener('click', startMapSelection);
@@ -142,13 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
       .filter(checkbox => checkbox.checked)
       .map(checkbox => checkbox.value);
     
-    // Get selected maps for the pool
-    const selectedMaps = Array.from(document.querySelectorAll('.map-filter input[type="checkbox"]'))
-      .filter(checkbox => checkbox.checked)
-      .map(checkbox => checkbox.value);
-    
     // Filter maps based on selected types and selected maps
-    state.mapsPool = squadMaps.filter(map => selectedTypes.includes(map.type) && selectedMaps.includes(map.name));
+    state.mapsPool = state.selectedLayers.filter(map => selectedTypes.includes(map.type));
     
     // Limit the number of maps in the pool based on random map limit
     if (state.mapsPool.length > state.randomMapLimit) {
@@ -159,12 +151,12 @@ document.addEventListener('DOMContentLoaded', () => {
       alert(getTranslation('notEnoughMaps'));
       return;
     }
-    
+
     // Set current turn based on selection
     state.currentTurn = firstBanSelect.value === 'team1' ? state.team1Name : state.team2Name;
     
     // Reset other state variables
-    state.selectedMaps = [...state.mapsPool];
+    state.selectedLayers = [...state.mapsPool];
     state.bannedMaps = [];
     state.gameInProgress = true;
     
@@ -179,8 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function getTeamName(team) {
-    const input = document.getElementById(`${team}-${state.currentLang}`);
-    return input.value.trim() || getTranslation(`${team}DefaultName`);
+    const input = document.getElementById(team);
+    return input ? input.value.trim() || getTranslation(`${team}DefaultName`) : getTranslation(`${team}DefaultName`);
   }
 
   function resetAndStartNewSelection() {
@@ -192,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
       finalMapCount: 3,
       currentTurn: '',
       mapsPool: [],
-      selectedMaps: [],
+      selectedLayers: [],
       bannedMaps: [],
       mapToBeRemoved: null,
       gameInProgress: false,
@@ -215,7 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Update team turn display with translation
     teamTurnDisplay.textContent = getTranslation('teamTurn', { team: state.currentTurn });
 
-    const remainingMaps = state.selectedMaps.length;
+    const remainingMaps = state.selectedLayers.length;
     const mapsToRemove = remainingMaps - state.finalMapCount;
 
     if (mapsToRemove <= 0) {
@@ -238,7 +230,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mapsContainer.innerHTML = '';
     
     // Render each map
-    state.selectedMaps.forEach(map => {
+    state.selectedLayers.forEach(map => {
       const mapCard = document.createElement('div');
       mapCard.className = 'map-card';
       mapCard.dataset.mapId = map.id;
@@ -299,7 +291,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state.bannedMaps.push(state.mapToBeRemoved);
     
     // Remove from selected maps
-    state.selectedMaps = state.selectedMaps.filter(map => map.id !== state.mapToBeRemoved.id);
+    state.selectedLayers = state.selectedLayers.filter(map => map.id !== state.mapToBeRemoved.id);
     
     // Switch turn
     state.currentTurn = state.currentTurn === state.team1Name ? state.team2Name : state.team1Name;
@@ -333,7 +325,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Render final maps
-    state.selectedMaps.forEach(map => {
+    state.selectedLayers.forEach(map => {
       const mapCard = document.createElement('div');
       mapCard.className = 'map-card final-map-card';
 
@@ -369,13 +361,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("Opening map filter modal...");
     // Render maps in the modal
     mapFilterContainer.innerHTML = '';
-    const availableMaps = [
-      'Harju', 'Anvil', 'AlBasrah', 'Belaya', 'Chora', 'Fallujah', 'FoolsRoad', 'GooseBay', 'Gorodok', 'Kamdesh',
-      'Kohat', 'Kokan', 'Lashkar', 'Logar', 'Manicouagan', 'Mestia', 'Mutaha', 'Narva', 'PacificProvingGrounds',
-      'Skorpo', 'Sumari', 'Tallil', 'Yehorivka', 'BlackCoast', 'Sanxian_Islands'
-    ];
 
-    availableMaps.forEach(mapName => {
+    maps.forEach(mapName => {
       const mapCard = document.createElement('div');
       mapCard.className = 'map-card';
       mapCard.dataset.mapName = mapName;
@@ -418,8 +405,8 @@ document.addEventListener('DOMContentLoaded', () => {
     console.log("Selected maps:", selectedMaps);
 
     // Update state with selected maps
-    state.selectedMaps = selectedMaps;
-    state.mapsPool = selectedMaps;
+    state.selectedLayers = squadLayers.filter(map => selectedMaps.includes(map.name));
+    console.log(state)
 
     // Close modal
     mapFilterModal.classList.remove('active');
@@ -452,5 +439,5 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize
   initLanguage();
   applyTranslations();
-  setupMapImages(squadMaps, state.currentLang);
+  setupMapImages(squadLayers, state.currentLang);
 });
