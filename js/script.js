@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
     finalMapCount: 3,
     currentTurn: '',
     mapsPool: [],
-    selectedLayers: [],
+    selectedLayers: squadLayers,
     bannedMaps: [],
     mapToBeRemoved: null,
     gameInProgress: false,
@@ -132,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state.team2Name = getTeamName('team2');
     
     state.finalMapCount = parseInt(finalMapCountInput.value) || 3;
-    state.randomMapLimit = parseInt(randomMapLimitInput.value) || 6;
+    state.randomMapLimit = parseInt(randomMapLimitInput.value) || squadLayers.length;
     
     // Get selected map types
     const selectedTypes = Array.from(mapTypeCheckboxes)
@@ -362,14 +362,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Render maps in the modal
     mapFilterContainer.innerHTML = '';
 
-    maps.forEach(mapName => {
+    new Set(squadLayers.map(l => l.name)).forEach(mapName => {
       const mapCard = document.createElement('div');
       mapCard.className = 'map-card';
       mapCard.dataset.mapName = mapName;
 
       // Create map image
       const img = document.createElement('img');
-      img.src = `assets/images/maps/${mapName}.jpg`;
+      img.src = `assets/images/maps/${mapName.replaceAll(' ', '').replaceAll('\'', '')}.jpg`;
       img.alt = mapName;
       mapCard.appendChild(img);
 
