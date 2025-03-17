@@ -1,12 +1,14 @@
 // script.js - Main logic for the Squad Map Selection
-
 document.addEventListener('DOMContentLoaded', () => {
   // DOM Elements
   const setupContainer = document.getElementById('setupContainer');
   const selectionPhase = document.getElementById('selectionPhase');
   const startSelectionBtn = document.getElementById('startSelection');
+  const startSelectionBtnEn = document.getElementById('startSelection-en');
   const team1Input = document.getElementById('team1');
+  const team1InputEn = document.getElementById('team1-en');
   const team2Input = document.getElementById('team2');
+  const team2InputEn = document.getElementById('team2-en');
   const finalMapCountInput = document.getElementById('finalMapCount');
   const firstBanSelect = document.getElementById('firstBan');
   const mapTypeCheckboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
@@ -17,10 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const finalMapsSection = document.getElementById('finalMapsSection');
   const finalMapsContainer = document.getElementById('finalMapsContainer');
   const newSelectionBtn = document.getElementById('newSelection');
+  const newSelectionBtnEn = document.getElementById('newSelection-en');
   const confirmationModal = document.getElementById('confirmationModal');
   const confirmationMessage = document.getElementById('confirmationMessage');
   const confirmBanBtn = document.getElementById('confirmBan');
+  const confirmBanBtnEn = document.getElementById('confirmBan-en');
   const cancelBanBtn = document.getElementById('cancelBan');
+  const cancelBanBtnEn = document.getElementById('cancelBan-en');
+  const languageBtns = document.querySelectorAll('.lang-btn');
 
   // App State
   let state = {
@@ -32,20 +38,100 @@ document.addEventListener('DOMContentLoaded', () => {
     selectedMaps: [],
     bannedMaps: [],
     mapToBeRemoved: null,
-    gameInProgress: false
+    gameInProgress: false,
+    currentLang: 'ru' // Default language
   };
 
   // Event Listeners
   startSelectionBtn.addEventListener('click', startMapSelection);
+  startSelectionBtnEn.addEventListener('click', startMapSelection);
   newSelectionBtn.addEventListener('click', resetAndStartNewSelection);
+  newSelectionBtnEn.addEventListener('click', resetAndStartNewSelection);
   confirmBanBtn.addEventListener('click', confirmMapBan);
+  confirmBanBtnEn.addEventListener('click', confirmMapBan);
   cancelBanBtn.addEventListener('click', cancelMapBan);
+  cancelBanBtnEn.addEventListener('click', cancelMapBan);
+  
+  // Language switcher
+  languageBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      switchLanguage(btn.getAttribute('data-lang'));
+    });
+  });
 
-  // Functions
+  // Initialize language based on browser or system settings
+  function initLanguage() {
+    let detectedLang = 'ru'; // Default to Russian
+    
+    // Try to detect browser language
+    if (navigator.language) {
+      const browserLang = navigator.language.substring(0, 2).toLowerCase();
+      if (browserLang === 'en') {
+        detectedLang = 'en';
+      }
+    }
+    
+    switchLanguage(detectedLang);
+  }
+
+  // Switch between languages
+  function switchLanguage(lang) {
+    state.currentLang = lang;
+    document.documentElement.lang = lang;
+    
+    // Hide all language elements
+    document.querySelectorAll('.lang-ru, .lang-en').forEach(el => {
+      el.classList.add('hidden');
+    });
+    
+    // Show current language elements
+    document.querySelectorAll(`.lang-${lang}`).forEach(el => {
+      el.classList.remove('hidden');
+    });
+    
+    // Update active button
+    languageBtns.forEach(btn => {
+      btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
+    });
+    
+    // Update select options for the team to ban first
+    updateSelectOptions(lang);
+    
+    // If game is in progress, update dynamic text
+    if (state.gameInProgress) {
+      updatePhaseInfo();
+      // Re-render maps to update the banned text
+      renderMaps();
+    }
+  }
+
+  // Update select options when language changes
+  function updateSelectOptions(lang) {
+    // Get all option elements in firstBanSelect
+    const options = firstBanSelect.querySelectorAll('option');
+    
+    // Update text for each option based on language
+    if (options.length >= 2) {
+      if (lang === 'ru') {
+        options[0].textContent = 'Команда 1';
+        options[1].textContent = 'Команда 2';
+      } else {
+        options[0].textContent = 'Team 1';
+        options[1].textContent = 'Team 2';
+      }
+    }
+  }
+
   function startMapSelection() {
-    // Get and validate inputs
-    state.team1Name = team1Input.value.trim() || 'Team 1';
-    state.team2Name = team2Input.value.trim() || 'Team 2';
+    // Get inputs based on current language
+    if (state.currentLang === 'ru') {
+      state.team1Name = team1Input.value.trim() || 'Команда 1';
+      state.team2Name = team2Input.value.trim() || 'Команда 2';
+    } else {
+      state.team1Name = team1InputEn.value.trim() || 'Team 1';
+      state.team2Name = team2InputEn.value.trim() || 'Team 2';
+    }
+    
     state.finalMapCount = parseInt(finalMapCountInput.value) || 3;
     
     // Get selected map types
@@ -57,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state.mapsPool = squadMaps.filter(map => selectedTypes.includes(map.type));
     
     if (state.mapsPool.length <= state.finalMapCount) {
-      alert('Not enough maps selected. Please select more map types or decrease the final map count.');
+      alert(getTranslation('notEnoughMaps'));
       return;
     }
     
@@ -79,7 +165,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function resetAndStartNewSelection() {
-    // Reset state
+    // Reset state but keep language preference
+    const currentLang = state.currentLang;
     state = {
       team1Name: '',
       team2Name: '',
@@ -89,12 +176,15 @@ document.addEventListener('DOMContentLoaded', () => {
       selectedMaps: [],
       bannedMaps: [],
       mapToBeRemoved: null,
-      gameInProgress: false
+      gameInProgress: false,
+      currentLang: currentLang
     };
     
     // Reset UI
     team1Input.value = '';
+    team1InputEn.value = '';
     team2Input.value = '';
+    team2InputEn.value = '';
     finalMapCountInput.value = '3';
     firstBanSelect.value = 'team1';
     mapTypeCheckboxes.forEach(checkbox => checkbox.checked = true);
@@ -106,7 +196,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function updatePhaseInfo() {
-    teamTurnDisplay.textContent = `${state.currentTurn}'s Turn to Ban`;
+    // Update team turn display with translation
+    teamTurnDisplay.textContent = getTranslation('teamTurn', { team: state.currentTurn });
     
     const remainingMaps = state.selectedMaps.length;
     const mapsToRemove = remainingMaps - state.finalMapCount;
@@ -116,8 +207,14 @@ document.addEventListener('DOMContentLoaded', () => {
       return;
     }
     
-    phaseDescription.textContent = `Each team takes turns banning maps until ${state.finalMapCount} remain.`;
-    mapCounter.textContent = `${remainingMaps} maps remaining, ${mapsToRemove} more to ban`;
+    // Update phase description with translation
+    phaseDescription.textContent = getTranslation('phaseDescription', { count: state.finalMapCount });
+    
+    // Update map counter with translation
+    mapCounter.textContent = getTranslation('mapCounter', { 
+      remaining: remainingMaps, 
+      toRemove: mapsToRemove 
+    });
   }
 
   function renderMaps() {
@@ -129,6 +226,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const mapCard = document.createElement('div');
       mapCard.className = 'map-card';
       mapCard.dataset.mapId = map.id;
+      
+      // Add banned text for appropriate language
+      const bannedText = state.currentLang === 'ru' ? 'ЗАБАНЕНО' : 'BANNED';
+      mapCard.setAttribute('data-banned-text', bannedText);
       
       // Create map image
       const img = document.createElement('img');
@@ -163,7 +264,15 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!state.gameInProgress) return;
     
     state.mapToBeRemoved = map;
-    confirmationMessage.textContent = `${state.currentTurn}, are you sure you want to ban ${map.name} (${map.type} ${map.version})?`;
+    
+    // Set confirmation message with translation
+    confirmationMessage.textContent = getTranslation('confirmBanMessage', {
+      team: state.currentTurn,
+      mapName: map.name,
+      mapType: map.type,
+      mapVersion: map.version
+    });
+    
     confirmationModal.classList.add('active');
   }
 
@@ -196,9 +305,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function finishMapSelection() {
-    // Update UI to show final maps
-    teamTurnDisplay.textContent = 'Map Selection Complete!';
-    phaseDescription.textContent = `The following ${state.finalMapCount} maps have been selected for the tournament:`;
+    // Update UI to show final maps with translations
+    teamTurnDisplay.textContent = getTranslation('selectionComplete');
+    phaseDescription.textContent = getTranslation('selectedMapsDescription', { count: state.finalMapCount });
     mapCounter.textContent = '';
     
     // Hide the maps selection container and show only the final maps section
@@ -239,68 +348,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state.gameInProgress = false;
   }
 
-  // Create directory for map images if needed
-  function createMapImagesDirectory() {
-    try {
-      // In a real environment, this would create the directory
-      // For this static demo, we'll just handle the image loading
-      console.log('Map images directory check completed');
-    } catch (e) {
-      console.error('Error checking directory:', e);
-    }
-  }
-
-  // Generate a placeholder image for a specific map
-  function createMapPlaceholder(mapName) {
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 300;
-    canvas.height = 200;
-    
-    // Draw gradient background
-    const gradient = ctx.createLinearGradient(0, 0, 300, 200);
-    gradient.addColorStop(0, '#17412b');
-    gradient.addColorStop(1, '#30805a');
-    ctx.fillStyle = gradient;
-    ctx.fillRect(0, 0, 300, 200);
-    
-    // Draw text with map name
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.font = 'bold 24px Arial';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(mapName, 150, 100);
-    
-    // Add "Squad Map" text
-    ctx.font = 'normal 16px Arial';
-    ctx.fillText('Squad Map', 150, 130);
-    
-    return canvas.toDataURL('image/jpeg');
-  }
-
-  // Setup map images and fallbacks
-  function setupMapImages() {
-    // Create maps directory
-    createMapImagesDirectory();
-    
-    // Add error handler for all map images
-    squadMaps.forEach(map => {
-      // Extract the map base name without spaces
-      const mapBaseName = map.name.replace(/\s+/g, '');
-      
-      // Set the image path based on the map name
-      map.image = `img/maps/${mapBaseName}.jpg`;
-      
-      // Pre-load the image to check if it exists
-      const img = new Image();
-      img.onerror = function() {
-        // If the image doesn't exist, use a data URL with the map name
-        map.image = createMapPlaceholder(map.name);
-      };
-      img.src = map.image;
-    });
-  }
-
   // Initialize
-  setupMapImages();
+  initLanguage();
+  setupMapImages(squadMaps, state.currentLang);
 });
