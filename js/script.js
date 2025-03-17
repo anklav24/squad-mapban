@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const cancelBanBtn = document.getElementById('cancelBan');
   const cancelBanBtnEn = document.getElementById('cancelBan-en');
   const languageBtns = document.querySelectorAll('.lang-btn');
+  const randomMapLimitInput = document.getElementById('randomMapLimit');
 
   // App State
   let state = {
@@ -39,7 +40,13 @@ document.addEventListener('DOMContentLoaded', () => {
     bannedMaps: [],
     mapToBeRemoved: null,
     gameInProgress: false,
-    currentLang: 'ru' // Default language
+    currentLang: 'ru', // Default language
+    randomMapLimit: 6, // Default random map limit
+    availableMaps: [
+      'Harju', 'Anvil', 'AlBasrah', 'Belaya', 'Chora', 'Fallujah', 'FoolsRoad', 'GooseBay', 'Gorodok', 'Kamdesh',
+      'Kohat', 'Kokan', 'Lashkar', 'Logar', 'Manicouagan', 'Mestia', 'Mutaha', 'Narva', 'PacificProvingGrounds',
+      'Skorpo', 'Sumari', 'Tallil', 'Yehorivka', 'BlackCoast', 'Sanxian_Islands'
+    ]
   };
 
   // Event Listeners
@@ -133,14 +140,25 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     state.finalMapCount = parseInt(finalMapCountInput.value) || 3;
+    state.randomMapLimit = parseInt(randomMapLimitInput.value) || 6;
     
     // Get selected map types
     const selectedTypes = Array.from(mapTypeCheckboxes)
       .filter(checkbox => checkbox.checked)
       .map(checkbox => checkbox.value);
     
-    // Filter maps based on selected types
-    state.mapsPool = squadMaps.filter(map => selectedTypes.includes(map.type));
+    // Get selected maps for the pool
+    const selectedMaps = Array.from(document.querySelectorAll('.map-filter input[type="checkbox"]'))
+      .filter(checkbox => checkbox.checked)
+      .map(checkbox => checkbox.value);
+    
+    // Filter maps based on selected types and selected maps
+    state.mapsPool = squadMaps.filter(map => selectedTypes.includes(map.type) && selectedMaps.includes(map.name));
+    
+    // Limit the number of maps in the pool based on random map limit
+    if (state.mapsPool.length > state.randomMapLimit) {
+      state.mapsPool = state.mapsPool.sort(() => 0.5 - Math.random()).slice(0, state.randomMapLimit);
+    }
     
     if (state.mapsPool.length <= state.finalMapCount) {
       alert(getTranslation('notEnoughMaps'));
@@ -266,11 +284,11 @@ document.addEventListener('DOMContentLoaded', () => {
     state.mapToBeRemoved = map;
     
     // Set confirmation message with translation
-    confirmationMessage.textContent = getTranslation('confirmBanMessage', {
+    confirmationMessage.innerHTML = getTranslation('confirmBanMessage', {
       team: state.currentTurn,
-      mapName: map.name,
+      mapName: `<br><strong>${map.name}`,
       mapType: map.type,
-      mapVersion: map.version
+      mapVersion: `${map.version}</strong>`
     });
     
     confirmationModal.classList.add('active');
@@ -309,42 +327,42 @@ document.addEventListener('DOMContentLoaded', () => {
     teamTurnDisplay.textContent = getTranslation('selectionComplete');
     phaseDescription.textContent = getTranslation('selectedMapsDescription', { count: state.finalMapCount });
     mapCounter.textContent = '';
-    
+
     // Hide the maps selection container and show only the final maps section
     mapsContainer.classList.add('hidden');
     finalMapsSection.classList.remove('hidden');
     finalMapsContainer.innerHTML = '';
-    
+
     // Render final maps
     state.selectedMaps.forEach(map => {
       const mapCard = document.createElement('div');
       mapCard.className = 'map-card final-map-card';
-      
+
       // Create map image
       const img = document.createElement('img');
       img.src = map.image;
       img.alt = `${map.name} ${map.type}`;
       mapCard.appendChild(img);
-      
+
       // Create map info
       const mapInfo = document.createElement('div');
       mapInfo.className = 'map-info';
-      
+
       const mapName = document.createElement('div');
       mapName.className = 'map-name';
       mapName.textContent = map.name;
       mapInfo.appendChild(mapName);
-      
+
       const mapType = document.createElement('div');
       mapType.className = 'map-type';
       mapType.textContent = `${map.type} ${map.version}`;
       mapInfo.appendChild(mapType);
-      
+
       mapCard.appendChild(mapInfo);
-      
+
       finalMapsContainer.appendChild(mapCard);
     });
-    
+
     state.gameInProgress = false;
   }
 
