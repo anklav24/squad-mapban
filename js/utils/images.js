@@ -1,5 +1,9 @@
 // Image utility functions
 
+const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary-color');
+const secondaryColor = getComputedStyle(document.documentElement).getPropertyValue('--secondary-color');
+const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-color');
+
 /**
  * Generate a placeholder image for a map if the actual image is not available
  * @param {string} mapName - Map name to display in the placeholder
@@ -14,8 +18,8 @@ function createMapPlaceholder(mapName, currentLang) {
   
   // Draw gradient background
   const gradient = ctx.createLinearGradient(0, 0, 300, 200);
-  gradient.addColorStop(0, '#17412b');
-  gradient.addColorStop(1, '#30805a');
+  gradient.addColorStop(0, primaryColor);
+  gradient.addColorStop(1, secondaryColor);
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, 300, 200);
   

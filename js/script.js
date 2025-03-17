@@ -4,8 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const setupContainer = document.getElementById('setupContainer');
   const selectionPhase = document.getElementById('selectionPhase');
   const startSelectionBtn = document.getElementById('startSelection');
-  const team1Input = document.getElementById('team1');
-  const team2Input = document.getElementById('team2');
   const finalMapCountInput = document.getElementById('finalMapCount');
   const firstBanSelect = document.getElementById('firstBan');
   const mapTypeCheckboxes = document.querySelectorAll('.checkbox-group input[type="checkbox"]');
@@ -24,15 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const randomMapLimitInput = document.getElementById('randomMapLimit');
   const mapFilterModal = document.getElementById('mapFilterModal');
   const mapFilterContainer = document.getElementById('mapFilterContainer');
-  // const confirmMapFilterBtn = document.getElementById('confirmMapFilter');
-  // const cancelMapFilterBtn = document.getElementById('cancelMapFilter');
   const selectAllMapsBtn = document.getElementById('selectAllMaps');
   const deselectAllMapsBtn = document.getElementById('deselectAllMaps');
   const openMapFilterModalBtn = document.getElementById('openMapFilterModal');
   const modeFilterModal = document.getElementById('modeFilterModal');
   const openModeFilterModalBtn = document.getElementById('openModeFilterModal');
-  // const confirmModeFilterBtn = document.getElementById('confirmModeFilter');
-  // const cancelModeFilterBtn = document.getElementById('cancelModeFilter');
 
   // App State
   let state = {
@@ -46,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mapToBeRemoved: null,
     gameInProgress: false,
     currentLang: 'ru', // Default language
-    randomMapLimit: 6, // Default random map limit
+    randomMapLimit: 10, // Default random map limit
 
   };
 
@@ -56,10 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
   newSelectionBtn.addEventListener('click', resetAndStartNewSelection);
   confirmBanBtn.addEventListener('click', confirmMapBan);
   cancelBanBtn.addEventListener('click', cancelMapBan);
-  // confirmMapFilterBtn.addEventListener('click', confirmMapFilter);
-  // cancelMapFilterBtn.addEventListener('click', () => {
-  //   mapFilterModal.classList.remove('active');
-  // });
+
   selectAllMapsBtn.addEventListener('click', () => {
     mapFilterContainer.querySelectorAll('.map-card').forEach(card => card.classList.add('selected'));
   });
@@ -71,15 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
   openModeFilterModalBtn.addEventListener('click', () => {
     modeFilterModal.classList.add('active');
   });
-
-  // cancelModeFilterBtn.addEventListener('click', () => {
-  //   modeFilterModal.classList.remove('active');
-  // });
-
-  // confirmModeFilterBtn.addEventListener('click', () => {
-  //   modeFilterModal.classList.remove('active');
-  //   // Add any additional logic for confirming the mode filter here
-  // });
 
   // Language switcher
   languageBtns.forEach(btn => {
@@ -201,11 +183,12 @@ document.addEventListener('DOMContentLoaded', () => {
       finalMapCount: 3,
       currentTurn: '',
       mapsPool: [],
-      selectedLayers: [],
+      selectedLayers: squadLayers,
       bannedMaps: [],
       mapToBeRemoved: null,
       gameInProgress: false,
-      currentLang: currentLang
+      currentLang: currentLang,
+      randomMapLimit: 10,
     };
     
     // Reset UI
