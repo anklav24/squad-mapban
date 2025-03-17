@@ -24,11 +24,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const randomMapLimitInput = document.getElementById('randomMapLimit');
   const mapFilterModal = document.getElementById('mapFilterModal');
   const mapFilterContainer = document.getElementById('mapFilterContainer');
-  const confirmMapFilterBtn = document.getElementById('confirmMapFilter');
-  const cancelMapFilterBtn = document.getElementById('cancelMapFilter');
+  // const confirmMapFilterBtn = document.getElementById('confirmMapFilter');
+  // const cancelMapFilterBtn = document.getElementById('cancelMapFilter');
   const selectAllMapsBtn = document.getElementById('selectAllMaps');
   const deselectAllMapsBtn = document.getElementById('deselectAllMaps');
   const openMapFilterModalBtn = document.getElementById('openMapFilterModal');
+  const modeFilterModal = document.getElementById('modeFilterModal');
+  const openModeFilterModalBtn = document.getElementById('openModeFilterModal');
+  // const confirmModeFilterBtn = document.getElementById('confirmModeFilter');
+  // const cancelModeFilterBtn = document.getElementById('cancelModeFilter');
 
   // App State
   let state = {
@@ -52,10 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
   newSelectionBtn.addEventListener('click', resetAndStartNewSelection);
   confirmBanBtn.addEventListener('click', confirmMapBan);
   cancelBanBtn.addEventListener('click', cancelMapBan);
-  confirmMapFilterBtn.addEventListener('click', confirmMapFilter);
-  cancelMapFilterBtn.addEventListener('click', () => {
-    mapFilterModal.classList.remove('active');
-  });
+  // confirmMapFilterBtn.addEventListener('click', confirmMapFilter);
+  // cancelMapFilterBtn.addEventListener('click', () => {
+  //   mapFilterModal.classList.remove('active');
+  // });
   selectAllMapsBtn.addEventListener('click', () => {
     mapFilterContainer.querySelectorAll('.map-card').forEach(card => card.classList.add('selected'));
   });
@@ -64,6 +68,19 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   openMapFilterModalBtn.addEventListener('click', openMapFilterModal);
   
+  openModeFilterModalBtn.addEventListener('click', () => {
+    modeFilterModal.classList.add('active');
+  });
+
+  // cancelModeFilterBtn.addEventListener('click', () => {
+  //   modeFilterModal.classList.remove('active');
+  // });
+
+  // confirmModeFilterBtn.addEventListener('click', () => {
+  //   modeFilterModal.classList.remove('active');
+  //   // Add any additional logic for confirming the mode filter here
+  // });
+
   // Language switcher
   languageBtns.forEach(btn => {
     btn.addEventListener('click', () => {
@@ -433,6 +450,9 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('click', (event) => {
     if (event.target === mapFilterModal) {
       mapFilterModal.classList.remove('active');
+    }
+    if (event.target === modeFilterModal) {
+      modeFilterModal.classList.remove('active');
     }
   });
 

@@ -24,7 +24,7 @@ const translations = {
         randomMapLimitLabel: "Максимальное количество лееров:",
         mapFilterLabel: "Фильтр карт:",
         openMapFilterBtn: "Открыть фильтр карт",
-        filterModes: "Фильтр режимов:",
+        filterModes: "Фильтр режимов",
         startSelectionBtn: "Начать выбор карт",
         phaseTitle: "Фаза выбора карт",
         selectedMapsTitle: "Выбранные карты",
@@ -37,7 +37,10 @@ const translations = {
         selectAllMapsBtn: "Выбрать все",
         deselectAllMapsBtn: "Убрать выбор со всех",
         confirmMapFilterBtn: "Подтвердить",
-        cancelMapFilterBtn: "Отмена"
+        cancelMapFilterBtn: "Отмена",
+        openModeFilterBtn: "Открыть фильтр режимов",
+        selectAllModesBtn: "Выбрать все",
+        deselectAllModesBtn: "Убрать выбор со всех",
     },
     en: {
         team1DefaultName: "Team 1",
@@ -63,7 +66,7 @@ const translations = {
         randomMapLimitLabel: "Maximum number of layers:",
         mapFilterLabel: "Filter Maps:",
         openMapFilterBtn: "Open Map Filter",
-        filterModes: "Filter Modes:",
+        filterModes: "Filter Modes",
         startSelectionBtn: "Start Map Selection",
         phaseTitle: "Map Selection Phase",
         selectedMapsTitle: "Selected Maps",
@@ -76,6 +79,9 @@ const translations = {
         selectAllMapsBtn: "Select All",
         deselectAllMapsBtn: "Deselect All",
         confirmMapFilterBtn: "Confirm",
-        cancelMapFilterBtn: "Cancel"
+        cancelMapFilterBtn: "Cancel",
+        openModeFilterBtn: "Open Mode Filter",
+        selectAllModesBtn: "Select All",
+        deselectAllModesBtn: "Deselect All",
     }
 };

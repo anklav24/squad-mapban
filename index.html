@@ -32,34 +32,23 @@
                         <input type="number" id="finalMapCount" min="1" max="10" value="3">
                     </div>
                     <div class="form-group">
-                        <label for="firstBan" data-translate="firstBanLabel">Команда, которая банит первой:</label>
+                        <label for="firstBan" data-translate="firstBanLabel"></label>
                         <select id="firstBan">
-                            <option value="team1" data-translate="team1Option">Команда 1</option>
-                            <option value="team2" data-translate="team2Option">Команда 2</option>
+                            <option value="team1" data-translate="team1Option"></option>
+                            <option value="team2" data-translate="team2Option"></option>
                         </select>
                     </div>
                     <div class="form-group random-map-limit">
-                        <label for="randomMapLimit" data-translate="randomMapLimitLabel">Максимальное количество лееров:</label>
+                        <label for="randomMapLimit" data-translate="randomMapLimitLabel"></label>
                         <input type="number" id="randomMapLimit" min="1" value="10">
                     </div>
                     <div class="form-group">
-                        <label for="mapFilter" data-translate="mapFilterLabel">Фильтр карт:</label>
-                        <button id="openMapFilterModal" class="btn" data-translate="openMapFilterBtn">Открыть фильтр карт</button>
+                        <button id="openMapFilterModal" class="btn" data-translate="openMapFilterBtn"></button>
+                    <!-- </div> -->
+                    <!-- <div class="form-group"> -->
+                        <button id="openModeFilterModal" class="btn" data-translate="openModeFilterBtn"></button>
                     </div>
-                    <div class="mode-filter">
-                        <h3 data-translate="filterModes">Фильтр режимов:</h3>
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" value="AAS" checked> AAS</label>
-                            <label><input type="checkbox" value="RAAS" checked> RAAS</label>
-                            <label><input type="checkbox" value="Invasion" checked> Invasion</label>
-                            <label><input type="checkbox" value="Insurgency" checked> Insurgency</label>
-                            <label><input type="checkbox" value="TC" checked> TC</label>
-                            <label><input type="checkbox" value="Skirmish" checked> Skirmish</label>
-                            <label><input type="checkbox" value="Destruction" checked> Destruction</label>
-                            <label><input type="checkbox" value="Seed" checked> Seed</label>
-                        </div>
-                    </div>
-                    <button id="startSelection" class="btn" data-translate="startSelectionBtn">Начать выбор карт</button>
+                    <button id="startSelection" class="btn" data-translate="startSelectionBtn"></button>
                 </div>
             </div>
         </header>
@@ -77,18 +66,18 @@
             </div>
 
             <div class="final-maps hidden" id="finalMapsSection">
-                <h2 data-translate="selectedMapsTitle">Выбранные карты</h2>
+                <h2 data-translate="selectedMapsTitle"></h2>
                 <div id="finalMapsContainer" class="final-maps-container">
                     <!-- Final map selection will be displayed here -->
                 </div>
-                <button id="newSelection" class="btn" data-translate="newSelectionBtn">Начать новый выбор</button>
+                <button id="newSelection" class="btn" data-translate="newSelectionBtn"></button>
             </div>
         </main>
     </div>
 
     <footer>
         <div class="footer-content">
-            <p data-translate="footerText">[RU][NKLV] Сибирский Анклав | Система выбора карт для турниров Squad</p>
+            <p data-translate="footerText"></p>
 
             <div class="language-selector">
                 <button data-lang="ru" class="lang-btn active">RU</button>
@@ -99,11 +88,11 @@
 
     <div id="confirmationModal" class="modal">
         <div class="modal-content">
-            <h3 data-translate="confirmBanTitle">Подтвердить бан</h3>
+            <h3 data-translate="confirmBanTitle"></h3>
             <p id="confirmationMessage"></p>
             <div class="button-group">
-                <button id="confirmBan" class="btn btn-danger" data-translate="confirmBanBtn">Подтвердить</button>
-                <button id="cancelBan" class="btn" data-translate="cancelBanBtn">Отмена</button>
+                <button id="confirmBan" class="btn btn-danger" data-translate="confirmBanBtn"></button>
+                <button id="cancelBan" class="btn" data-translate="cancelBanBtn"></button>
             </div>
         </div>
     </div>
@@ -111,14 +100,32 @@
     <div id="mapFilterModal" class="modal">
         <div class="modal-content">
             <div class="button-group fixed">
-                <h2 data-translate="mapFilterTitle">Фильтр карт</h2>
-                <button id="selectAllMaps" class="btn" data-translate="selectAllMapsBtn">Выбрать все</button>
-                <button id="deselectAllMaps" class="btn" data-translate="deselectAllMapsBtn">Убрать выбор со всех</button>
-                <button id="confirmMapFilter" class="btn" data-translate="confirmMapFilterBtn">Подтвердить</button>
-                <button id="cancelMapFilter" class="btn btn-danger" data-translate="cancelMapFilterBtn">Отмена</button>
+                <h2 data-translate="mapFilterTitle"></h2>
+                <button id="selectAllMaps" class="btn" data-translate="selectAllMapsBtn"></button>
+                <button id="deselectAllMaps" class="btn" data-translate="deselectAllMapsBtn"></button>
             </div>
             <div class="maps-container" id="mapFilterContainer">
                 <!-- Map cards will be generated here -->
+            </div>
+        </div>
+    </div>
+
+    <div class="mode-filter-modal" id="modeFilterModal">
+        <div class="modal-content">
+            <h2 data-translate="filterModes"></h2>
+            <div class="checkbox-group">
+                <label><input type="checkbox" value="AAS" checked> AAS</label>
+                <label><input type="checkbox" value="RAAS" checked> RAAS</label>
+                <label><input type="checkbox" value="Invasion" checked> Invasion</label>
+                <label><input type="checkbox" value="Insurgency" checked> Insurgency</label>
+                <label><input type="checkbox" value="TC" checked> TC</label>
+                <label><input type="checkbox" value="Skirmish" checked> Skirmish</label>
+                <label><input type="checkbox" value="Destruction" checked> Destruction</label>
+                <label><input type="checkbox" value="Seed" checked> Seed</label>
+            </div>
+            <div class="button-group">
+                <button id="selectAllModes" class="btn" data-translate="selectAllModesBtn"></button>
+                <button id="deselectAllModes" class="btn" data-translate="deselectAllModesBtn"></button>
             </div>
         </div>
     </div>
