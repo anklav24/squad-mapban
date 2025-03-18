@@ -208,6 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
     finalMapCountInput.value = '2';
     firstBanSelect.value = 'team1';
     mapTypeCheckboxes.forEach(checkbox => checkbox.checked = true);
+    document.getElementById('team1').value = '';
+    document.getElementById('team2').value = '';
 
     selectionPhase.classList.add('hidden');
     finalMapsSection.classList.add('hidden');
@@ -455,4 +457,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initLanguage();
   applyTranslations();
   setupMapImages(squadLayers, state.currentLang);
+
+  // Add event listener to brand title
+  document.querySelector('.brand').addEventListener('click', () => {
+    resetAndStartNewSelection()
+  });
 });
