@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let state = {
     team1Name: '',
     team2Name: '',
-    finalMapCount: 3,
+    finalMapCount: 2,
     currentTurn: '',
     mapsPool: [],
     selectedLayers: squadLayers,
@@ -192,7 +192,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state = {
       team1Name: '',
       team2Name: '',
-      finalMapCount: 3,
+      finalMapCount: 2,
       currentTurn: '',
       mapsPool: [],
       selectedLayers: squadLayers,
