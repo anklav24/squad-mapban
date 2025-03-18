@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     state.team1Name = getTeamName('team1');
     state.team2Name = getTeamName('team2');
     
-    state.finalMapCount = parseInt(finalMapCountInput.value) || 3;
+    state.finalMapCount = parseInt(finalMapCountInput.value) || 2;
     state.randomMapLimit = parseInt(randomMapLimitInput.value) || squadLayers.length;
     
     // Get selected map types
@@ -205,7 +205,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Reset UI
     document.querySelectorAll('.team-input').forEach(input => input.value = '');
-    finalMapCountInput.value = '3';
+    finalMapCountInput.value = '2';
     firstBanSelect.value = 'team1';
     mapTypeCheckboxes.forEach(checkbox => checkbox.checked = true);
     
@@ -370,7 +370,6 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function openMapFilterModal() {
-    console.log("Opening map filter modal...");
     // Render maps in the modal
     mapFilterContainer.innerHTML = '';
 
@@ -401,6 +400,11 @@ document.addEventListener('DOMContentLoaded', () => {
         mapCard.classList.toggle('selected');
         console.log(`Toggled selection for map: ${mapName}`);
       });
+
+      // Check if the map is already selected
+      if (state.selectedLayers.some(map => map.name === mapName)) {
+        mapCard.classList.add('selected');
+      }
 
       mapFilterContainer.appendChild(mapCard);
     });
@@ -444,7 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Close modal when clicking outside of it
   window.addEventListener('click', (event) => {
     if (event.target === mapFilterModal) {
-      mapFilterModal.classList.remove('active');
+      confirmMapFilter();
     }
     if (event.target === modeFilterModal) {
       modeFilterModal.classList.remove('active');

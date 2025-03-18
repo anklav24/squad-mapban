@@ -4,7 +4,7 @@
   --accent-color: #519872;
   --text-color: #ffffff;
   --danger-color: #d43131;
-  --background-color-lighter: #4d4d4d;
+  --background-color-lighter: #2b2b2b;
   --background-color: #1a1a1a;
   --card-bg: #232323;
   --border-radius: 5px;
@@ -535,6 +535,47 @@ footer {
     width: 90%;
 }
 
+/* Add styles for scrollable map filter modal */
+.map-filter-modal .modal-content {
+  max-height: 80vh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.map-filter-modal .button-group.fixed {
+  position: sticky;
+  top: 0;
+  background-color: var(--card-bg);
+  z-index: 10;
+  padding: 10px 0;
+  border-bottom: 2px solid var(--secondary-color);
+  width: 100%;
+  left: 0;
+}
+
+.map-filter-modal .maps-container {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.map-filter-modal .modal-content h2 {
+  margin: 0;
+  padding: 10px;
+  background-color: var(--card-bg);
+  border-bottom: 2px solid var(--secondary-color);
+}
+
+.map-filter-modal .modal-content .button-group {
+  padding: 10px;
+  background-color: var(--card-bg);
+  border-bottom: 2px solid var(--secondary-color);
+}
+
+.map-filter-modal .modal-content .maps-container {
+  padding: 10px;
+}
+
 #mapFilterContainer {
   display: flex;
   flex-wrap: wrap;
@@ -550,8 +591,6 @@ footer {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   position: relative;
   cursor: pointer;
-/*   flex: 1 1 calc(20% - 10px); */
-  /*   max-width: calc(20% - 10px); */
 }
 
 #mapFilterContainer .map-card:hover {
@@ -582,7 +621,7 @@ footer {
 }
 
 #mapFilterContainer .map-card.selected {
-  background-color: var(--accent-color);
+  background-color: var(--background-color-lighter);
   color: var(--text-color);
   border: 2px solid var(--secondary-color);
 }
