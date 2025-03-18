@@ -63,6 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
     modeFilterModal.classList.add('active');
   });
 
+  const selectAllModesBtn = document.getElementById('selectAllModes');
+  const deselectAllModesBtn = document.getElementById('deselectAllModes');
+  const modeCheckboxes = document.querySelectorAll('.mode-filter-modal input[type="checkbox"]');
+
+  selectAllModesBtn.addEventListener('click', () => {
+    modeCheckboxes.forEach(checkbox => checkbox.checked = true);
+  });
+
+  deselectAllModesBtn.addEventListener('click', () => {
+    modeCheckboxes.forEach(checkbox => checkbox.checked = false);
+  });
+
   // Language switcher
   languageBtns.forEach(btn => {
     btn.addEventListener('click', () => {
