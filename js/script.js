@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     mapFilterContainer.querySelectorAll('.map-card').forEach(card => card.classList.remove('selected'));
   });
   openMapFilterModalBtn.addEventListener('click', openMapFilterModal);
-  
+
   openModeFilterModalBtn.addEventListener('click', () => {
     modeFilterModal.classList.add('active');
   });
@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initialize language based on browser or system settings
   function initLanguage() {
     let detectedLang = 'ru'; // Default to Russian
-    
+
     // Try to detect browser language
     if (navigator.language) {
       const browserLang = navigator.language.substring(0, 2).toLowerCase();
@@ -93,7 +93,7 @@ document.addEventListener('DOMContentLoaded', () => {
         detectedLang = 'en';
       }
     }
-    
+
     switchLanguage(detectedLang);
   }
 
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function switchLanguage(lang) {
     state.currentLang = lang;
     document.documentElement.lang = lang;
-    
+
     // Update active button
     languageBtns.forEach(btn => {
       btn.classList.toggle('active', btn.getAttribute('data-lang') === lang);
@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Update select options for the team to ban first
     updateSelectOptions(lang);
-    
+
     // If game is in progress, update dynamic text
     if (state.gameInProgress) {
       updatePhaseInfo();
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function updateSelectOptions(lang) {
     // Get all option elements in firstBanSelect
     const options = firstBanSelect.querySelectorAll('option');
-    
+
     // Update text for each option based on language
     if (options.length >= 2) {
       options[0].textContent = getTranslation('team1DefaultName');
@@ -141,23 +141,23 @@ document.addEventListener('DOMContentLoaded', () => {
     // Get inputs based on current language
     state.team1Name = getTeamName('team1');
     state.team2Name = getTeamName('team2');
-    
+
     state.finalMapCount = parseInt(finalMapCountInput.value) || 2;
     state.randomMapLimit = parseInt(randomMapLimitInput.value) || squadLayers.length;
-    
+
     // Get selected map types
     const selectedTypes = Array.from(mapTypeCheckboxes)
       .filter(checkbox => checkbox.checked)
       .map(checkbox => checkbox.value);
-    
+
     // Filter maps based on selected types and selected maps
     state.mapsPool = state.selectedLayers.filter(map => selectedTypes.includes(map.type));
-    
+
     // Limit the number of maps in the pool based on random map limit
     if (state.mapsPool.length > state.randomMapLimit) {
       state.mapsPool = state.mapsPool.sort(() => 0.5 - Math.random()).slice(0, state.randomMapLimit);
     }
-    
+
     if (state.mapsPool.length <= state.finalMapCount) {
       alert(getTranslation('notEnoughMaps'));
       return;
@@ -165,18 +165,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set current turn based on selection
     state.currentTurn = firstBanSelect.value === 'team1' ? state.team1Name : state.team2Name;
-    
+
     // Reset other state variables
     state.selectedLayers = [...state.mapsPool];
     state.bannedMaps = [];
     state.gameInProgress = true;
-    
+
     // Update UI
     setupContainer.classList.add('hidden');
     selectionPhase.classList.remove('hidden');
     mapsContainer.classList.remove('hidden');
     finalMapsSection.classList.add('hidden');
-    
+
     updatePhaseInfo();
     renderMaps();
   }
@@ -202,13 +202,13 @@ document.addEventListener('DOMContentLoaded', () => {
       currentLang: currentLang,
       randomMapLimit: 10,
     };
-    
+
     // Reset UI
     document.querySelectorAll('.team-input').forEach(input => input.value = '');
     finalMapCountInput.value = '2';
     firstBanSelect.value = 'team1';
     mapTypeCheckboxes.forEach(checkbox => checkbox.checked = true);
-    
+
     selectionPhase.classList.add('hidden');
     finalMapsSection.classList.add('hidden');
     setupContainer.classList.remove('hidden');
@@ -231,60 +231,60 @@ document.addEventListener('DOMContentLoaded', () => {
     phaseDescription.textContent = getTranslation('phaseDescription', { count: state.finalMapCount });
 
     // Update map counter with translation
-    mapCounter.textContent = getTranslation('mapCounter', { 
-      remaining: remainingMaps, 
-      toRemove: mapsToRemove 
+    mapCounter.textContent = getTranslation('mapCounter', {
+      remaining: remainingMaps,
+      toRemove: mapsToRemove
     });
   }
 
   function renderMaps() {
     // Clear previous maps
     mapsContainer.innerHTML = '';
-    
+
     // Render each map
     state.selectedLayers.forEach(map => {
       const mapCard = document.createElement('div');
       mapCard.className = 'map-card';
       mapCard.dataset.mapId = map.id;
-      
+
       // Add banned text for appropriate language
       const bannedText = state.currentLang === 'ru' ? 'ЗАБАНЕНО' : 'BANNED';
       mapCard.setAttribute('data-banned-text', bannedText);
-      
+
       // Create map image
       const img = document.createElement('img');
       img.src = map.image;
       img.alt = `${map.name} ${map.type}`;
       mapCard.appendChild(img);
-      
+
       // Create map info
       const mapInfo = document.createElement('div');
       mapInfo.className = 'map-info';
-      
+
       const mapName = document.createElement('div');
       mapName.className = 'map-name';
       mapName.textContent = map.name;
       mapInfo.appendChild(mapName);
-      
+
       const mapType = document.createElement('div');
       mapType.className = 'map-type';
       mapType.textContent = `${map.type} ${map.version}`;
       mapInfo.appendChild(mapType);
-      
+
       mapCard.appendChild(mapInfo);
-      
+
       // Add click event
       mapCard.addEventListener('click', () => promptMapBan(map));
-      
+
       mapsContainer.appendChild(mapCard);
     });
   }
 
   function promptMapBan(map) {
     if (!state.gameInProgress) return;
-    
+
     state.mapToBeRemoved = map;
-    
+
     // Set confirmation message with translation
     confirmationMessage.innerHTML = getTranslation('confirmBanMessage', {
       team: state.currentTurn,
@@ -292,28 +292,28 @@ document.addEventListener('DOMContentLoaded', () => {
       mapType: map.type,
       mapVersion: `${map.version}</strong>`
     });
-    
+
     confirmationModal.classList.add('active');
   }
 
   function confirmMapBan() {
     if (!state.mapToBeRemoved) return;
-    
+
     // Add to banned maps
     state.bannedMaps.push(state.mapToBeRemoved);
-    
+
     // Remove from selected maps
     state.selectedLayers = state.selectedLayers.filter(map => map.id !== state.mapToBeRemoved.id);
-    
+
     // Switch turn
     state.currentTurn = state.currentTurn === state.team1Name ? state.team2Name : state.team1Name;
-    
+
     // Reset map to be removed
     state.mapToBeRemoved = null;
-    
+
     // Close modal
     confirmationModal.classList.remove('active');
-    
+
     // Update UI
     updatePhaseInfo();
     renderMaps();
@@ -413,16 +413,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function confirmMapFilter() {
-    console.log("Confirming map filter...");
     // Get selected maps
     const selectedMapCards = mapFilterContainer.querySelectorAll('.map-card.selected');
     const selectedMaps = Array.from(selectedMapCards).map(card => card.dataset.mapName);
 
-    console.log("Selected maps:", selectedMaps);
-
     // Update state with selected maps
     state.selectedLayers = squadLayers.filter(map => selectedMaps.includes(map.name));
-    console.log(state)
 
     // Close modal
     mapFilterModal.classList.remove('active');
@@ -434,14 +430,14 @@ document.addEventListener('DOMContentLoaded', () => {
   function applyTranslations() {
     const elements = document.querySelectorAll('[data-translate]');
     elements.forEach(el => {
-        const key = el.getAttribute('data-translate');
-        el.textContent = getTranslation(key);
+      const key = el.getAttribute('data-translate');
+      el.textContent = getTranslation(key);
     });
 
     const placeholders = document.querySelectorAll('[data-placeholder]');
     placeholders.forEach(el => {
-        const key = el.getAttribute('data-placeholder');
-        el.placeholder = getTranslation(key);
+      const key = el.getAttribute('data-placeholder');
+      el.placeholder = getTranslation(key);
     });
   }
 

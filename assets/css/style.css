@@ -581,6 +581,8 @@ footer {
   flex-wrap: wrap;
   gap: 10px;
   justify-content: center;
+  max-height: 50vh;
+  overflow-y: auto;
 }
 
 #mapFilterContainer .map-card {
